@@ -1,0 +1,239 @@
+---
+title: "SWIRLSS package"
+author: "<a href= http://henokuga@gmail.com>Henok G. Woldu (PhD) and Kevin K. Dobbin (PhD) </a>"
+date: "`r Sys.Date()`"
+output: 
+   
+   rmarkdown::html_vignette:
+   self_contained: no
+   fig_caption: yes
+   css: SWIRLSSvignettestyle.css
+vignette: >
+  %\VignetteIndexEntry{SWIRLSS}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+# Summary
+Advancement in genom sequencing in the last few years have lead to a surge of predictive biomarker discoveries. Parallel to that, statistical methods for evaluating these biomarkers have been advancing. A metric $\Theta$ developed by [Janes et.al (2014)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4626364/), is now widely used as  a measure of the biomarker's clinical 
+benefit for patients. This metric measures the decrease in the expected event rate as a result of a biomarker guided theraphy. However, there is no smaple size calculation method developed that can help to design  a study which is enough powered  in order to evaluate the biomarker's clinical utlity. The _Squared Width Inversion Linear Regression Sample Size (SWIRLSS)_ is a package used to estimate a sample size $n$ such that the 95\% CI mean width of the metric $\Theta$ is smaller than a user defined length ($W_{targ}$).
+
+## Package description
+
+The **SWIRLSS**  package consisits of several functions used to estimate the sample size $n$ so that the mean width of the 95\% confidence interval for $\Theta$ is less than a user defined length $(W_{targ})$. The main functions of the package are:
+
+1. **coeffgen** : A function used to change the clinician defined values to model coefficients.
+
+2. **logdata** : A function  used to generate data from a logistic regression model given by 
+$$Ln\left[ \frac{Pr(Y = 1|T,X)}{1-Pr(Y = 1 | T,X)} \right] = \beta_0 +\ \beta_1X+\beta_2T+\beta_3 T*X$$
+ Where $Y$ is the outcome which is binary, $T$ is the treatment assignment ( $T = 1$ if treated and $T = 0$ if not treated) and $X$ is a continous biomarker measured at base line for a each subject.
+ 
+3. **eventprob** : A function used to estimate the probability of an event under the three different treatment options. 
+
+   (a) Treat All: estimates the probility of an event when all subjects are assigned to treatment group.
+   (b) Treat None: estiamtes the probability of an event when all subjects are assigned to no treament (control) group.
+  (c) Optimal Treament: estiamtes the probability of an event when treatment assignment is made based on the biomarker
+    value of each subjects. That is, a subject will be assigned to treament if he/she will benefit from it and to no treament
+    otherwise.
+    
+4. **bootsmethod** : A function used to get the converage probability of $\Theta$.
+
+
+5. **ssswirl** : A function used to estimate the sample size $n$ that ensures the 95\% CI mean width of $\Theta$ is less than 
+   a defined length $(W_{targ})$
+
+
+
+## Using this package
+
+The main steps to follow to use and/or extend this package are as follows:
+
+
+### Install the package
+
+It is not yet on CRAN, but once it is available it can be installed and used as
+
+```{r, eval=FALSE , echo=T}
+ 
+install.packages("SWIRLSS")  # install it first 
+   
+library(SWIRLSS)             # load the package 
+
+```
+
+
+The very updated version of this package can be obtained from my _github_ account [Henok G. Woldu] (https://github.com/henok535). To install it from my github, the `devtools` package has to be  first installed. Here is how you can install it directly from github:
+
+```{r, eval=FALSE, echo=TRUE}
+
+install.packages("devtools")  # install the devtools package if you have not done it before.
+
+library(devtools)            # load the package devtools
+
+# to install the SWIRLSS from my github acount ("henok535/SWIRLSS")
+
+install_github("henok535/SWIRLSS")
+
+library(SWIRLSS)     
+ 
+# Well come to SWIRLSS package. It is now ready for use!
+
+```
+
+
+## Examples for using each function 
+
+########## Required packages ######
+
+```{r}
+
+library(boot)
+
+```
+
+
+### Changing Clinician Inputs to Model Coefficients
+
+
+```{r}
+
+# Here are some possible user defined values ( 11, k2, k3 and k3). These can be adjusted to meet specific
+# problem under consideration.
+
+kval1 <- c(K1 = log(0.25/0.75), k2 = log(0.75/0.25), k3 = log(0.75/0.25), k4= log(0.25/0.75))
+kval2 <- c(k1 = log(0.10/0.90), k2 = log(0.90/0.10), k3 = log(0.90/0.10), k4 = log(0.10/0.90))
+kval3 <- c(k1 = log(0.10/0.90), k2 = log(0.55/0.45), k3 = log(0.90/0.10), k4 = log(0.45/0.55))
+kval4 <- c(k1 = log(0.25/0.75), k2 = log(0.75/0.25), k3 = log(0.50/0.50), k4 = log(0.50/0.50))
+kval5 <- c(k1 = log(0.90/0.10), k2 = log(0.45/0.55), k3 = log(0.10/0.90), k4 = log(0.55/0.45))
+kval6 <- c(k1 = log(0.60/0.40), k2 = log(0.40/0.60), k3 = log(0.50/0.50), k4 = log(0.50/0.50))
+
+
+# get the 25th and 75th percentile value of the biomarker value  assuming it is
+# is normaly or uniformly distributed
+
+set.seed(535)
+pardist <- c(0,1)    # standard uniform / normal. We can change this one as needed
+
+bmrkunif <- runif(100000,pardist[1],pardist[2]) # Assuming the biomarker has uniform distribution
+bmrknorm <- rnorm(100000,pardist[1],pardist[2]) # Assuming the biomarker has normal distribution
+
+zval <- c(quantile(bmrkunif)[2], quantile(bmrkunif)[4]) #25th and 75th percentile biomarker
+
+modcoeff <- coeffgen(kval1, zval)
+modcoeff    # this provideds the coefficients beta0, beta1, beta2 and beta3
+            # which will be used to generate data from the logistic model specified above.
+```
+
+
+## Calculate the event probability under each scenario
+
+```{r}
+
+# When the biomarker distribution is uniform
+
+Event_None <- eventprob(modpar = modcoeff, dist = "uniform", trtopt = "treat_none",  bmrkpar = pardist)
+Event_All <- eventprob(modpar = modcoeff, dist = "uniform", trtopt = "treat_all",  bmrkpar = pardist)
+Event_Opt <- eventprob(modpar = modcoeff, dist = "uniform",  trtopt = "treat_opt",  bmrkpar = pardist)
+
+# then Theta1 and Theta0 will be
+
+Theta1_true <- Event_All - Event_Opt
+Theta0_true <- Event_None - Event_Opt
+c(Theta1_true, Theta0_true)
+
+# When the biomarker is generated from a normal distribution, one can uncomment the following codes
+# to calculate the event probability under each scenario the their respective thetas.
+
+  #Event_None <- eventprob(modpar = modcoeff, dist = "normal", trtopt = "treat_none",  bmrkpar = pardist)
+  #Event_All <- eventprob(modpar = modcoeff, dist = "normal", trtopt = "treat_all",  bmrkpar = pardist)
+  #Event_Opt <- eventprob(modpar = modcoeff, dist = "normal", trtopt = "treat_opt",  bmrkpar = pardist)
+
+# then Theta1 and Theta0 will be
+
+    #Theta1_true <- Event_All - Event_Opt
+    #Theta0_true <- Event_None - Event_Opt
+    #c(Theta1_true, Theta0_true)
+
+```
+
+
+
+## Generate a data from a logistic model
+
+```{r}
+
+m = 25      # number of data sets
+n = 500     # sample size for each data set
+
+
+mydat <- logdata(m, n, modcoeff, "uniform", pardist)
+
+datt <- mydat[[1]]     # sample of one data set            
+
+```
+
+
+## Use bootstrap to get the coverage probability and 95\% CI mean width for Theta.
+
+When running this, it takes few minutes. If the objective is just to understand the 
+program, one can run this with few data sets ( 2 to 5) and small sample size ( 100 to 300). 
+That is, change m and n in the previous step.
+
+
+#### Please uncomment all the following codes to run the program.
+
+```{r}
+
+# alldatout <- lapply(mydat, function(a) bootsmethod(a, "uniform", pardist))
+# outdat <- as.data.frame(matrix(unlist(alldatout), ncol = 11, byrow = T))
+# 
+# Finaloutput <- list(Treat_None = mean(outdat$V1),
+#                     Treat_All = mean(outdat$V2),
+#                     Treat_Opt = mean(outdat$V3),
+#                     Theta1 = mean(outdat$V4),
+#                     Theta195CI = c(mean(outdat$V6), mean(outdat$V7)),
+#                     width_Theta1 = mean(outdat$V5),
+#                     Converage_Theta1 = length(intersect(which(outdat$V6 < Theta1_true),
+#                                                 which(outdat$V7 > Theta1_true))),
+#                     Theta0 = mean(outdat$V8),
+#                     Theta095CI = c(mean(outdat$V10), mean(outdat$V11)),
+#                     width_Theta0 = mean(outdat$V9),
+#                     Converage_Theta0 = length(intersect(which(outdat$V10 < Theta0_true),
+#                                             which(outdat$V11 > Theta0_true)))
+#                   )
+# 
+# Finaloutput
+
+
+```
+
+
+## Sample Size Estimation
+
+Similarly, running this funciton takes few minutes . User who just want to familarize with the program
+can change the mcdat to fewer squence of number each representing a sample size n and run the program.
+
+
+#### uncomment this code to run it
+
+```{r}
+
+# newdat1 <- data.frame(w = c(0.10,0.15,0.20)^-2)
+# mcdat = seq(100,1500,50)
+# samplesize1 <- ssswirl(modcoeff, "uniform", mcdat, m = 10, pardist,
+#                                    bmrkdgn = "strategy", newdat1)
+# 
+# 
+# samplesize1
+
+```
+
+
+
+
+
+
+
+

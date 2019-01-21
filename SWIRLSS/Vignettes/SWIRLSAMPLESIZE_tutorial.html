@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Henok G. Woldu (PhD) and Kevin K. Dobbin (PhD)" />
+
+<meta name="date" content="2019-01-21" />
+
+<title>SWIRLSS package</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">SWIRLSS package</h1>
+<h4 class="author"><em><a href="http://henokuga@gmail.com">Henok G. Woldu (PhD) and Kevin K. Dobbin (PhD) </a></em></h4>
+<h4 class="date"><em>2019-01-21</em></h4>
+
+
+
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>Advancement in genom sequencing in the last few years have lead to a surge of predictive biomarker discoveries. Parallel to that, statistical methods for evaluating these biomarkers have been advancing. A metric <span class="math inline">\(\Theta\)</span> developed by <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4626364/">Janes et.al (2014)</a>, is now widely used as a measure of the biomarker’s clinical benefit for patients. This metric measures the decrease in the expected event rate as a result of a biomarker guided theraphy. However, there is no smaple size calculation method developed that can help to design a study which is enough powered in order to evaluate the biomarker’s clinical utlity. The <em>Squared Width Inversion Linear Regression Sample Size (SWIRLSS)</em> is a package used to estimate a sample size <span class="math inline">\(n\)</span> such that the 95% CI mean width of the metric <span class="math inline">\(\Theta\)</span> is smaller than a user defined length (<span class="math inline">\(W_{targ}\)</span>).</p>
+<div id="package-description" class="section level2">
+<h2>Package description</h2>
+<p>The <strong>SWIRLSS</strong> package consisits of several functions used to estimate the sample size <span class="math inline">\(n\)</span> so that the mean width of the 95% confidence interval for <span class="math inline">\(\Theta\)</span> is less than a user defined length <span class="math inline">\((W_{targ})\)</span>. The main functions of the package are:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>coeffgen</strong> : A function used to change the clinician defined values to model coefficients.</p></li>
+<li><p><strong>logdata</strong> : A function used to generate data from a logistic regression model given by <span class="math display">\[Ln\left[ \frac{Pr(Y = 1|T,X)}{1-Pr(Y = 1 | T,X)} \right] = \beta_0 +\ \beta_1X+\beta_2T+\beta_3 T*X\]</span> Where <span class="math inline">\(Y\)</span> is the outcome which is binary, <span class="math inline">\(T\)</span> is the treatment assignment ( <span class="math inline">\(T = 1\)</span> if treated and <span class="math inline">\(T = 0\)</span> if not treated) and <span class="math inline">\(X\)</span> is a continous biomarker measured at base line for a each subject.</p></li>
+<li><p><strong>eventprob</strong> : A function used to estimate the probability of an event under the three different treatment options.</p></li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li>Treat All: estimates the probility of an event when all subjects are assigned to treatment group.</li>
+<li>Treat None: estiamtes the probability of an event when all subjects are assigned to no treament (control) group.</li>
+<li>Optimal Treament: estiamtes the probability of an event when treatment assignment is made based on the biomarker value of each subjects. That is, a subject will be assigned to treament if he/she will benefit from it and to no treament otherwise.</li>
+</ol>
+<ol start="4" style="list-style-type: decimal">
+<li><p><strong>bootsmethod</strong> : A function used to get the converage probability of <span class="math inline">\(\Theta\)</span>.</p></li>
+<li><p><strong>ssswirl</strong> : A function used to estimate the sample size <span class="math inline">\(n\)</span> that ensures the 95% CI mean width of <span class="math inline">\(\Theta\)</span> is less than a defined length <span class="math inline">\((W_{targ})\)</span></p></li>
+</ol>
+</div>
+<div id="using-this-package" class="section level2">
+<h2>Using this package</h2>
+<p>The main steps to follow to use and/or extend this package are as follows:</p>
+<div id="install-the-package" class="section level3">
+<h3>Install the package</h3>
+<p>It is not yet on CRAN, but once it is available it can be installed and used as</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;SWIRLSS&quot;</span>)  <span class="co"># install it first </span>
+   
+<span class="kw">library</span>(SWIRLSS)             <span class="co"># load the package </span></code></pre></div>
+<p>The very updated version of this package can be obtained from my <em>github</em> account [Henok G. Woldu] (<a href="https://github.com/henok535" class="uri">https://github.com/henok535</a>). To install it from my github, the <code>devtools</code> package has to be first installed. Here is how you can install it directly from github:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)  <span class="co"># install the devtools package if you have not done it before.</span>
+
+<span class="kw">library</span>(devtools)            <span class="co"># load the package devtools</span>
+
+<span class="co"># to install the SWIRLSS from my github acount (&quot;henok535/SWIRLSS&quot;)</span>
+
+<span class="kw">install_github</span>(<span class="st">&quot;henok535/SWIRLSS&quot;</span>)
+
+<span class="kw">library</span>(SWIRLSS)     
+ 
+<span class="co"># Well come to SWIRLSS package. It is now ready for use!</span></code></pre></div>
+</div>
+</div>
+<div id="examples-for-using-each-function" class="section level2">
+<h2>Examples for using each function</h2>
+<div id="required-packages" class="section level10">
+<p>Required packages</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(boot)</code></pre></div>
+</div>
+<div id="changing-clinician-inputs-to-model-coefficients" class="section level3">
+<h3>Changing Clinician Inputs to Model Coefficients</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Here are some possible user defined values ( 11, k2, k3 and k3). These can be adjusted to meet specific</span>
+<span class="co"># problem under consideration.</span>
+
+kval1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">K1 =</span> <span class="kw">log</span>(<span class="fl">0.25</span><span class="op">/</span><span class="fl">0.75</span>), <span class="dt">k2 =</span> <span class="kw">log</span>(<span class="fl">0.75</span><span class="op">/</span><span class="fl">0.25</span>), <span class="dt">k3 =</span> <span class="kw">log</span>(<span class="fl">0.75</span><span class="op">/</span><span class="fl">0.25</span>), <span class="dt">k4=</span> <span class="kw">log</span>(<span class="fl">0.25</span><span class="op">/</span><span class="fl">0.75</span>))
+kval2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">k1 =</span> <span class="kw">log</span>(<span class="fl">0.10</span><span class="op">/</span><span class="fl">0.90</span>), <span class="dt">k2 =</span> <span class="kw">log</span>(<span class="fl">0.90</span><span class="op">/</span><span class="fl">0.10</span>), <span class="dt">k3 =</span> <span class="kw">log</span>(<span class="fl">0.90</span><span class="op">/</span><span class="fl">0.10</span>), <span class="dt">k4 =</span> <span class="kw">log</span>(<span class="fl">0.10</span><span class="op">/</span><span class="fl">0.90</span>))
+kval3 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">k1 =</span> <span class="kw">log</span>(<span class="fl">0.10</span><span class="op">/</span><span class="fl">0.90</span>), <span class="dt">k2 =</span> <span class="kw">log</span>(<span class="fl">0.55</span><span class="op">/</span><span class="fl">0.45</span>), <span class="dt">k3 =</span> <span class="kw">log</span>(<span class="fl">0.90</span><span class="op">/</span><span class="fl">0.10</span>), <span class="dt">k4 =</span> <span class="kw">log</span>(<span class="fl">0.45</span><span class="op">/</span><span class="fl">0.55</span>))
+kval4 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">k1 =</span> <span class="kw">log</span>(<span class="fl">0.25</span><span class="op">/</span><span class="fl">0.75</span>), <span class="dt">k2 =</span> <span class="kw">log</span>(<span class="fl">0.75</span><span class="op">/</span><span class="fl">0.25</span>), <span class="dt">k3 =</span> <span class="kw">log</span>(<span class="fl">0.50</span><span class="op">/</span><span class="fl">0.50</span>), <span class="dt">k4 =</span> <span class="kw">log</span>(<span class="fl">0.50</span><span class="op">/</span><span class="fl">0.50</span>))
+kval5 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">k1 =</span> <span class="kw">log</span>(<span class="fl">0.90</span><span class="op">/</span><span class="fl">0.10</span>), <span class="dt">k2 =</span> <span class="kw">log</span>(<span class="fl">0.45</span><span class="op">/</span><span class="fl">0.55</span>), <span class="dt">k3 =</span> <span class="kw">log</span>(<span class="fl">0.10</span><span class="op">/</span><span class="fl">0.90</span>), <span class="dt">k4 =</span> <span class="kw">log</span>(<span class="fl">0.55</span><span class="op">/</span><span class="fl">0.45</span>))
+kval6 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">k1 =</span> <span class="kw">log</span>(<span class="fl">0.60</span><span class="op">/</span><span class="fl">0.40</span>), <span class="dt">k2 =</span> <span class="kw">log</span>(<span class="fl">0.40</span><span class="op">/</span><span class="fl">0.60</span>), <span class="dt">k3 =</span> <span class="kw">log</span>(<span class="fl">0.50</span><span class="op">/</span><span class="fl">0.50</span>), <span class="dt">k4 =</span> <span class="kw">log</span>(<span class="fl">0.50</span><span class="op">/</span><span class="fl">0.50</span>))
+
+
+<span class="co"># get the 25th and 75th percentile value of the biomarker value  assuming it is</span>
+<span class="co"># is normaly or uniformly distributed</span>
+
+<span class="kw">set.seed</span>(<span class="dv">535</span>)
+pardist &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)    <span class="co"># standard uniform / normal. We can change this one as needed</span>
+
+bmrkunif &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="dv">100000</span>,pardist[<span class="dv">1</span>],pardist[<span class="dv">2</span>]) <span class="co"># Assuming the biomarker has uniform distribution</span>
+bmrknorm &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">100000</span>,pardist[<span class="dv">1</span>],pardist[<span class="dv">2</span>]) <span class="co"># Assuming the biomarker has normal distribution</span>
+
+zval &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">quantile</span>(bmrkunif)[<span class="dv">2</span>], <span class="kw">quantile</span>(bmrkunif)[<span class="dv">4</span>]) <span class="co">#25th and 75th percentile biomarker</span>
+
+modcoeff &lt;-<span class="st"> </span><span class="kw">coeffgen</span>(kval1, zval)
+modcoeff    <span class="co"># this provideds the coefficients beta0, beta1, beta2 and beta3</span></code></pre></div>
+<pre><code>## [1] -2.203280  4.403618  4.406561 -8.807236</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">            <span class="co"># which will be used to generate data from the logistic model specified above.</span></code></pre></div>
+</div>
+</div>
+<div id="calculate-the-event-probability-under-each-scenario" class="section level2">
+<h2>Calculate the event probability under each scenario</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># When the biomarker distribution is uniform</span>
+
+Event_None &lt;-<span class="st"> </span><span class="kw">eventprob</span>(<span class="dt">modpar =</span> modcoeff, <span class="dt">dist =</span> <span class="st">&quot;uniform&quot;</span>, <span class="dt">trtopt =</span> <span class="st">&quot;treat_none&quot;</span>,  <span class="dt">bmrkpar =</span> pardist)
+Event_All &lt;-<span class="st"> </span><span class="kw">eventprob</span>(<span class="dt">modpar =</span> modcoeff, <span class="dt">dist =</span> <span class="st">&quot;uniform&quot;</span>, <span class="dt">trtopt =</span> <span class="st">&quot;treat_all&quot;</span>,  <span class="dt">bmrkpar =</span> pardist)
+Event_Opt &lt;-<span class="st"> </span><span class="kw">eventprob</span>(<span class="dt">modpar =</span> modcoeff, <span class="dt">dist =</span> <span class="st">&quot;uniform&quot;</span>,  <span class="dt">trtopt =</span> <span class="st">&quot;treat_opt&quot;</span>,  <span class="dt">bmrkpar =</span> pardist)
+
+<span class="co"># then Theta1 and Theta0 will be</span>
+
+Theta1_true &lt;-<span class="st"> </span>Event_All <span class="op">-</span><span class="st"> </span>Event_Opt
+Theta0_true &lt;-<span class="st"> </span>Event_None <span class="op">-</span><span class="st"> </span>Event_Opt
+<span class="kw">c</span>(Theta1_true, Theta0_true)</code></pre></div>
+<pre><code>## [1] 0.2331036 0.2325684</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># When the biomarker is generated from a normal distribution, one can uncomment the following codes</span>
+<span class="co"># to calculate the event probability under each scenario the their respective thetas.</span>
+
+  <span class="co">#Event_None &lt;- eventprob(modpar = modcoeff, dist = &quot;normal&quot;, trtopt = &quot;treat_none&quot;,  bmrkpar = pardist)</span>
+  <span class="co">#Event_All &lt;- eventprob(modpar = modcoeff, dist = &quot;normal&quot;, trtopt = &quot;treat_all&quot;,  bmrkpar = pardist)</span>
+  <span class="co">#Event_Opt &lt;- eventprob(modpar = modcoeff, dist = &quot;normal&quot;, trtopt = &quot;treat_opt&quot;,  bmrkpar = pardist)</span>
+
+<span class="co"># then Theta1 and Theta0 will be</span>
+
+    <span class="co">#Theta1_true &lt;- Event_All - Event_Opt</span>
+    <span class="co">#Theta0_true &lt;- Event_None - Event_Opt</span>
+    <span class="co">#c(Theta1_true, Theta0_true)</span></code></pre></div>
+</div>
+<div id="generate-a-data-from-a-logistic-model" class="section level2">
+<h2>Generate a data from a logistic model</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m =<span class="st"> </span><span class="dv">25</span>      <span class="co"># number of data sets</span>
+n =<span class="st"> </span><span class="dv">500</span>     <span class="co"># sample size for each data set</span>
+
+
+mydat &lt;-<span class="st"> </span><span class="kw">logdata</span>(m, n, modcoeff, <span class="st">&quot;uniform&quot;</span>, pardist)
+
+datt &lt;-<span class="st"> </span>mydat[[<span class="dv">1</span>]]     <span class="co"># sample of one data set            </span></code></pre></div>
+</div>
+<div id="use-bootstrap-to-get-the-coverage-probability-and-95-ci-mean-width-for-theta." class="section level2">
+<h2>Use bootstrap to get the coverage probability and 95% CI mean width for Theta.</h2>
+<p>When running this, it takes few minutes. If the objective is just to understand the program, one can run this with few data sets ( 2 to 5) and small sample size ( 100 to 300). That is, change m and n in the previous step.</p>
+<div id="please-uncomment-all-the-following-codes-to-run-the-program." class="section level4">
+<h4>Please uncomment all the following codes to run the program.</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># alldatout &lt;- lapply(mydat, function(a) bootsmethod(a, &quot;uniform&quot;, pardist))</span>
+<span class="co"># outdat &lt;- as.data.frame(matrix(unlist(alldatout), ncol = 11, byrow = T))</span>
+<span class="co"># </span>
+<span class="co"># Finaloutput &lt;- list(Treat_None = mean(outdat$V1),</span>
+<span class="co">#                     Treat_All = mean(outdat$V2),</span>
+<span class="co">#                     Treat_Opt = mean(outdat$V3),</span>
+<span class="co">#                     Theta1 = mean(outdat$V4),</span>
+<span class="co">#                     Theta195CI = c(mean(outdat$V6), mean(outdat$V7)),</span>
+<span class="co">#                     width_Theta1 = mean(outdat$V5),</span>
+<span class="co">#                     Converage_Theta1 = length(intersect(which(outdat$V6 &lt; Theta1_true),</span>
+<span class="co">#                                                 which(outdat$V7 &gt; Theta1_true))),</span>
+<span class="co">#                     Theta0 = mean(outdat$V8),</span>
+<span class="co">#                     Theta095CI = c(mean(outdat$V10), mean(outdat$V11)),</span>
+<span class="co">#                     width_Theta0 = mean(outdat$V9),</span>
+<span class="co">#                     Converage_Theta0 = length(intersect(which(outdat$V10 &lt; Theta0_true),</span>
+<span class="co">#                                             which(outdat$V11 &gt; Theta0_true)))</span>
+<span class="co">#                   )</span>
+<span class="co"># </span>
+<span class="co"># Finaloutput</span></code></pre></div>
+</div>
+</div>
+<div id="sample-size-estimation" class="section level2">
+<h2>Sample Size Estimation</h2>
+<p>Similarly, running this funciton takes few minutes . User who just want to familarize with the program can change the mcdat to fewer squence of number each representing a sample size n and run the program.</p>
+<div id="uncomment-this-code-to-run-it" class="section level4">
+<h4>uncomment this code to run it</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># newdat1 &lt;- data.frame(w = c(0.10,0.15,0.20)^-2)</span>
+<span class="co"># mcdat = seq(100,1500,50)</span>
+<span class="co"># samplesize1 &lt;- ssswirl(modcoeff, &quot;uniform&quot;, mcdat, m = 10, pardist,</span>
+<span class="co">#                                    bmrkdgn = &quot;strategy&quot;, newdat1)</span>
+<span class="co"># </span>
+<span class="co"># </span>
+<span class="co"># samplesize1</span></code></pre></div>
+</div>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

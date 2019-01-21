@@ -1,0 +1,33 @@
+Package: SWIRLSS
+Type: Package
+Title: Sample Size Calculation for Assessing Predictive Biomarker Clinical Utility
+Description: This package is used to calculate the sample size n so that the 95\% 
+           CI mean width of the parameter proposed by Janes et. al (2014) is less than the user 
+           defined length. All the functions in this package include explanation on how and when 
+           to use them. SWIRLSS is an acronym for Squared Width Inversion Regression Linear. 
+Version: 0.1
+Date: 2018-5-14
+Authors@R: c(
+            person("Henok", "G. Woldu", email = "henokuga@gmail.com", role = c("aut", "cre")),
+            person("Kevin", "Dobbin",  role = "ctb") 
+        	)
+Maintainer: Henok G. Woldu <henokuga@gmail.com>
+License: GPL-3
+LazyData: TRUE
+Encoding: UTF-8
+Imports:
+    stats,
+    knitr (>= 1.15),
+    utils,
+    boot,
+    base
+Depends:
+    R (>= 3.4)
+Suggests:
+    rmarkdown,
+    testthat,
+    knitr
+RoxygenNote: 6.1.1
+VignetteBuilder: knitr
+URL: https://github.com/henok535
+BugReports: https://github.com/henok535
